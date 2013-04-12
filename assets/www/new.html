@@ -1,0 +1,151 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Leafhaven</title> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
+	<link rel="stylesheet" href="css/ui.css" />	
+    <script src="js/cordova-2.1.0.js"></script>
+	<script src="js/jquery-1.8.2.js"></script>
+	<script src="js/underscore.js"></script>
+	<script src="js/jquery.mobile-1.2.0.min.js"></script>
+	<script>
+		var worldtick=0, 
+			townmenubtnclicked=false;
+		
+		$(document).on('pageinit', function(){
+		
+			if (typeof localStorage.world!='undefined'){
+				var worlddata = localStorage.world;
+				var loaddata = JSON.parse(worlddata);
+				myapp = new world(loaddata);
+				
+			}else{
+				myapp = new world();
+			}
+			
+			setInterval(function(){
+				myapp.ticker();
+			}, myapp.worldspeed);
+			
+			window.onunload=function(){
+				var worlddata=myapp.savedata;
+				localStorage.world = JSON.stringify(worlddata);
+			};
+
+		});
+	</script>
+	<script src="js/world.js"></script>
+</head> 
+<body> 
+
+	<div id='frontpage' data-role="page" style='overflow:hidden;'>
+		<div class="ui-grid-a" data-role="header" data-theme="a" data-position="fixed" data-tap-toggle="false">
+			<div class="ui-block-a" style="vertical-align:middle;margin-top:8px">&nbsp;<span class='worldinfo' ><a id='worldseason'>Winter</a> ~ <a id='worldday'>Sunday</a>&nbsp;<a id='month'>Jan</a>.&nbsp;<a id='daynum'>1</a>,&nbsp;<a id='yrnum'>001</a></span></div>
+			<div class="ui-block-b" style="text-align:right;"><a id='hours'>00</a>:<a id='mins'>00</a><img id='daypart' src="images/ui/moon45px.png" style="vertical-align:middle;display:inline-block" /></div>
+		</div>
+
+		<div data-role="content">	
+			<div id='map' style='background:url("images/leafhavendark2.jpg")'>
+				<img src='images/leafhavensnow.jpg' style='opacity:0.0'>
+			</div>
+			<div id="actionmenu" style='position:absolute;bottom:10px;width:50%;height:auto;padding:5px;'>
+				<ul data-role="listview" data-inset="true" >
+					<li data-role="list-divider"><a id='menu_town'>Leafhaven</a></li>
+					<li><a id='visit'>Visit</a></li>
+					<li><a id='checkstatus'>Status</a></li>
+					<li><a id ='planner' href="#">Planner</a></li>
+					<li><a href="bmw.html">Sleep</a></li>
+				</ul>
+			</div>	
+		</div>
+		<div id='popups'>
+			<div id="charstatus" data-role="popup" data-theme="e" class="ui-content" data-position-to="window">
+			  ...Popup contents...
+			</div>
+			<div id="eventspop" data-role="popup" data-theme="none" data-shadow="false" data-position-to="origin">
+				<div id='tavern' class='ui-btn-up-e ui-inner ui-corner-all' style='position:absolute;top:500px;left:100px;width:100px;padding:4px;display:inline-block;opacity:0.8;'><img src='images/ui/event.png' align="middle" style='display:inline-block;'/><span style='display:inline-text;'>Tavern</span></div>
+				<div id='highstreet' class='ui-btn-up-b ui-inner ui-corner-all' style='position:absolute;top:100px;left:100px;width:135px;padding:4px;display:inline-block;opacity:0.9;'><img src='images/ui/event.png' align="middle" style='display:inline-block;'/><span style='display:inline-text;'>High Street</span></div>
+			</div>
+			<div id="plazapopup" data-role="popup" data-theme="e" class="ui-content">
+			  Town Square
+			</div>
+		</div>
+		
+		<div data-role="footer" data-theme="a" data-position="fixed" data-tap-toggle="false" >
+			<div data-role="navbar" data-iconpos='top'>
+				<ul>
+					<li><a id='townmenubtn' href="#" data-role="button" data-icon="home">Town</a></li>
+					<li><a href="#" data-role="button" data-icon="alert">Planner</a></li>
+				</ul>
+			</div><!-- /navbar -->
+		</div>
+	</div>
+	
+
+
+	<div id='templates' data-role="page">
+		<div id='listitem' class='ui-btn-up-b ui-corner-top ui-corner-bottom ui-shadow' style='margin:5px;padding:5px;'>
+			<span id='itemname' style='font-style:bold;font-size:18px;'>Item Name </span>
+			<br/><br/><br/>
+		</div>
+	
+	
+	</div>
+	
+	<script>
+		$('#frontpage').live('pageshow', function(){
+			var contentht= 2*($('.ui-header').height()) + window.innerHeight;
+			//$('[data-role=content]').css('height', window.outerHeight);
+			$('.innerblock').css('height', contentht+'px');
+			$('#actionmenu').css('top', window.innerHeight);
+		});
+		
+		
+		$('#townmenubtn').bind('click', function(){
+			if (!townmenubtnclicked){
+				$('#actionmenu').animate({top:window.innerHeight-320},500);
+				 townmenubtnclicked=true;
+			}else{
+				$('#actionmenu').animate({top:window.innerHeight},500);
+				townmenubtnclicked=false;
+			}
+		});
+		
+		//popup links
+		$('#tavern').on('click', function(){
+			alert('gonna get smashed');
+		});
+		
+		
+		//actionmenu items
+		$('#actionmenu ul').delegate('li', 'click', function(){
+			$('#actionmenu ul').find('div.ui-btn-inner').removeClass('ui-btn-active');
+			$(this).find('div.ui-btn-inner').toggleClass('ui-btn-active');
+			$('#actionmenu').animate({top:window.innerHeight},500);
+			townmenubtnclicked=false;
+		});
+		
+		$('#visit').bind('click', function(){
+			if (myapp.daytime=='day'){
+				$('#eventspop').attr('data-theme','a');
+			}else{
+				$('#eventspop').attr('data-theme','c');
+			}
+			$('#eventspop').popup("open",{x:0,y:0});
+		});
+		
+		
+		//events
+		$( "#eventspop" ).bind({
+		   popupafterclose: function(event, ui) {
+				$('#actionmenu ul').find('div.ui-btn-inner').removeClass('ui-btn-active');
+		   }
+		});
+	</script>
+</body>
+</html>

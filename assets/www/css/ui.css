@@ -1,0 +1,26 @@
+
+
+span.worldinfo{
+	font-size: 15px;
+}
+
+div#map{
+	position:absolute;
+	top: 40px;
+	left:-400px;
+}
+
+
+div #actionmenu{
+}
+
+div #console{
+	padding:5px;
+	border-style:dotted;
+	border-width:1px;
+	background-image: linear-gradient(left top, rgb(255,255,255) 43%, rgb(184,255,255) 72%);
+	background-image: -o-linear-gradient(left top, rgb(255,255,255) 43%, rgb(184,255,255) 72%);
+	background-image: -moz-linear-gradient(left top, rgb(255,255,255) 43%, rgb(184,255,255) 72%);
+	background-image: -webkit-linear-gradient(left top, rgb(255,255,255) 43%, rgb(184,255,255) 72%);
+	background-image: -ms-linear-gradient(left top, rgb(255,255,255) 43%, rgb(184,255,255) 72%);
+}

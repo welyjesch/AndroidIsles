@@ -1,0 +1,75 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Isles</title> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
+	<link rel="stylesheet" href="css/ui.css" />	
+    <script src="js/cordova-2.1.0.js"></script>
+	<script src="js/jquery-1.8.2.js"></script>
+	<script src="js/underscore.js"></script>
+	<script src="js/jquery.mobile-1.2.0.min.js"></script>
+	<script>
+		var worldtick=0;
+	</script>
+	<script src="js/world.js"></script>
+</head> 
+<body> 
+
+	<div id='frontpage' data-role="page">
+		<div class="ui-grid-d" data-role="header" data-theme="a" data-position="fixed">
+			<div class="ui-block-a"><h2 style="margin:0px;padding: 5px 0px 0px 5px;">Isles</h2></div>
+			<div class="ui-block-b"></div>
+			<div class="ui-block-c"></div>
+			<!--
+			<div class="ui-block-d" style="background-color:gold"><img src="images/ui/sun45px.png"/></div>
+			-->
+			<div class="ui-block-d" style="text-align:right;vertical-align:middle;padding:15px"></div>
+			<div class="ui-block-e" style="text-align:right;font-size:20px"><span id='ticks'>0</span><img src="images/ui/moon45px.png" style="vertical-align:middle;" /></div>
+		</div>
+
+		<div class="ui-grid-b" data-role="content" style='padding:0px;'>	
+			<div id="console" class="innerblock ui-block-a">content</div>
+			<div id="results" class="innerblock ui-block-b">middle</div>
+			<div id="actionmenu" class="innerblock ui-block-c" style='padding:5px;'>
+				<ul data-role="listview" data-inset="true" >
+					<li data-role="list-divider"><a>Main Menu</a></li>
+					<li><a id='choice'>Gear up</a></li>
+					<li><a href="audi.html">Train</a></li>
+					<li><a href="bmw.html">Sleep</a></li>
+				</ul>
+			</div>	
+		</div>
+		
+		
+	</div>
+
+	<div id='templates' data-role="page">
+		<div id='listitem' class='ui-btn-up-b ui-corner-top ui-corner-bottom ui-shadow' style='margin:5px;padding:5px;'>
+			<span id='itemname' style='font-style:bold;font-size:18px;'>Item Name </span>
+			<br/><br/><br/>
+		</div>
+	
+	
+	</div>
+	
+	<script>
+		$('#frontpage').live('pageshow', function(){
+			var contentht= 2*($('.ui-header').height()) + window.innerHeight;
+			//$('[data-role=content]').css('height', window.outerHeight);
+			$('.innerblock').css('height', contentht);
+		});
+		
+		$('#choice').bind('click', function(){
+			var newli = $('#templates').find('#listitem');
+			newli.attr('id','resitem');
+			$('#results').append(newli);
+			$('#resitem').delay(100).fadeOut().fadeIn('slow')
+		});
+	</script>
+</body>
+</html>
